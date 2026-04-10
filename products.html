@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRODUCTOS - Rubikx Store</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        /* Contenedor flexible para los productos */
+        .catalog {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 250px;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        /* Estilo de los botones */
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-atras {
+            background-color: #6c757d;
+            width: auto;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>PRODUCTOS</h1>
+
+    <div class="catalog">
+        <div class="product-card">
+            <img src="RUBIKX_CON_GAFAS.png" alt="Rubikx con gafas" width="200" height="200">
+            <a href="GAFAS-RUBIKX.html">
+                <button type="button">GAFAS DEL RUBIKX</button>
+            </a>
+        </div>
+
+        <div class="product-card">
+            <img src="bot.png" alt="Figura del bot" width="200" height="200">
+            <a href="FIGURA_bot.html">
+                <button type="button">FIGURA DEL BOT</button>
+            </a>
+        </div>
+    </div>
+
+    <a href="GEOXIX.html">
+        <button type="button" class="btn-atras">Atrás</button>
+    </a>
+
+</body>
+</html>
