@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEOXIX</title>
     <!-- Línea añadida para el icono de la pestaña -->
-    <link rel="icon" type="image/x-icon" href="Logo.ICO">
+    <link rel="icon" type="image/x-icon" href="Logo.ico">
     
     <style>
         body {
@@ -56,7 +56,7 @@
 
         /* Imagen específica para el botón de Juegos */
         .btn-juegos {
-            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("imagen-juegos.png");
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("botton-frutiger.png");
         }
 
         /* Imagen o color para el botón de Login */
@@ -252,7 +252,7 @@
 
             <!-- BOTÓN DE GOOGLE PERSONALIZADO -->
             <button type="button" class="btn-google" id="googleLoginBtn">
-                <img src="https://gstatic.com" alt="Google Logo">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
                 Iniciar sesión con Google
             </button>
 
@@ -260,8 +260,8 @@
     </div>
 
     <!-- LIBRERÍAS DE FIREBASE COMPATIBLES CON HTML DIRECTO -->
-    <script src="https://gstatic.com"></script>
-    <script src="https://gstatic.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
     <script>
         // Tus credenciales asignadas correctamente
@@ -290,10 +290,44 @@
         const welcomeTitle = document.getElementById('welcomeTitle');
 
         // Abrir y cerrar modal
-        openBtn.addEventListener('click', () => { modal.style.display = 'flex'; });
+        openBtn.addEventListener('click', () => {
+            if (auth.currentUser) { auth.signOut(); return; }
+            modal.style.display = 'flex';
+        });
         closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
         window.addEventListener('click', (e) => {
             if (e.target === modal) { modal.style.display = 'none'; }
         });
 
         // CONTROL DEL INICIO DE SESIÓN CON GOOGLE REAL
+
+        googleBtn.addEventListener('click', () => {
+            auth.signInWithPopup(provider)
+                .then(() => { modal.style.display = 'none'; })
+                .catch((error) => { alert('No se pudo iniciar sesión con Google: ' + error.message); });
+        });
+
+        // INICIO DE SESIÓN CON CORREO Y CONTRASEÑA
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => { modal.style.display = 'none'; form.reset(); })
+                .catch((error) => { alert('No se pudo iniciar sesión: ' + error.message); });
+        });
+
+        // MOSTRAR EL ESTADO DE LA SESIÓN
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                welcomeTitle.textContent = '¡Hola, ' + (user.displayName || user.email) + '!';
+                openBtn.textContent = 'SALIR';
+            } else {
+                welcomeTitle.textContent = 'una imagen';
+                openBtn.textContent = 'LOGIN';
+            }
+        });
+    </script>
+
+</body>
+</html>

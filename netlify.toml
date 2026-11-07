@@ -1,0 +1,9 @@
+[build]
+  # The site's files live in the "pagina" folder
+  publish = "pagina"
+
+# Show the new GEOXIX design as the home page
+[[redirects]]
+  from = "/"
+  to = "/GEOXIX.html"
+  status = 200
