@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRODUCTOS - Rubikx Store</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000000;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Contenedor flexible para los productos */
+        .catalog {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            width: 260px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .product-card img {
+            border-radius: 10px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            background-color: #eee;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            color: #28a745;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        /* Estilo de los botones */
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-atras {
+            background-color: #6c757d;
+            width: auto;
+            margin: 50px auto;
+            display: inline-block;
+            padding: 10px 30px;
+            text-decoration: none;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .btn-atras:hover {
+            background-color: #000000;
+        }
+
+        a {
+            text-decoration: none;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Nuestros Productos</h1>
+
+    <div class="catalog">
+        <div class="product-card">
+            <img src="RUBIKX_CON_GAFAS.png" alt="Rubikx con gafas" width="220" height="220">
+            <p class="price">$15.00</p>
+            <a href="GAFAS-RUBIKX.html">
+                <button type="button">VER GAFAS</button>
+            </a>
+        </div>
+
+        <div class="product-card">
+            <img src="bot.png" alt="Figura del bot" width="220" height="220">
+            <p class="price">$25.00</p>
+            <a href="FIGURA_bot.html">
+                <button type="button">VER FIGURA BOT</button>
+            </a>
+        </div>
+          <a href="pagina2.html">
+    <button type="button">Ir a otra página</button>
+           </a>
+
+    </div>
+
+    <br>
+
+    <a href="geoxix.netlify.app" class="btn-atras">Atrás</a>
+
+</body>
+</html>
