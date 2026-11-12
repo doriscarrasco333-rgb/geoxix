@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEOXIX</title>
     <!-- Línea añadida para el icono de la pestaña -->
-    <link rel="icon" type="image/x-icon" href="Logo.ico">
+    <link rel="icon" type="image/png" href="logo.geoxix.official.png">
+    <link rel="apple-touch-icon" href="logo.geoxix.official.png">
     
     <style>
         body {
@@ -29,7 +30,15 @@
         .nav-container {
             margin: 20px;
             display: flex; /* Alinea los botones uno al lado del otro */
+            flex-wrap: wrap; /* En pantallas pequeñas pasan a la siguiente línea */
+            justify-content: center;
             gap: 20px;     /* Espacio entre los botones */
+        }
+
+        .hero-img {
+            max-width: 90%;
+            height: auto;
+            margin-bottom: 30px;
         }
 
         /* Estilos generales para todos los botones con imagen */
@@ -215,11 +224,42 @@
             box-shadow: none;
             border-radius: 0;
         }
+        /* Ajustes para celulares */
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 10px;
+                background-attachment: scroll;
+            }
+            .nav-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                width: 100%;
+                max-width: 360px;
+                margin: 10px 0 20px;
+            }
+            .nav-container a, .nav-container .btn-login {
+                width: 100%;
+            }
+            .btn-imagen {
+                width: 100%;
+                height: 54px;
+                font-size: 14px;
+            }
+            h1 {
+                font-size: 24px;
+                text-align: center;
+            }
+            .hero-img {
+                max-width: 100%;
+            }
+            .login-card {
+                padding: 24px 18px;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <img src="logo.geoxix.official.png" alt="Logo de GEOXIX" class="logo">
 
     <div class="nav-container">
         <a href="PRODUCTS.html"><button type="button" class="btn-imagen btn-productos">Productos</button></a>
@@ -230,7 +270,7 @@
 
     <h1 id="welcomeTitle">una imagen</h1>
 
-    <img src="bot.png" alt="Representación de bot GEOXIX" width="600" height="400">
+    <img src="bot.png" alt="Representación de bot GEOXIX" width="600" height="400" class="hero-img">
 
 
     <!-- VENTANA MODAL DEL INICIO DE SESIÓN -->
