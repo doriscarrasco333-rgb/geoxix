@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRODUCTOS - Rubikx Store</title>
+    <link rel="icon" type="image/png" href="logo.geoxix.official.png">
+    <link rel="apple-touch-icon" href="logo.geoxix.official.png">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -48,6 +50,8 @@
         }
 
         .product-card img {
+            max-width: 100%;
+            height: auto;
             border-radius: 10px;
             object-fit: cover;
             margin-bottom: 15px;
@@ -96,6 +100,12 @@
         a {
             text-decoration: none;
             width: 100%;
+        }
+        @media (max-width: 600px) {
+            body { padding: 15px 10px; }
+            h1 { font-size: 22px; margin-bottom: 25px; }
+            .product-card { width: 100%; max-width: 320px; box-sizing: border-box; }
+            .btn-atras { margin: 30px auto; }
         }
     </style>
 </head>
