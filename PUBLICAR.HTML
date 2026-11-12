@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicar Video - GEOXIX</title>
+    <link rel="icon" type="image/x-icon" href="Logo.ico">
+    
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            margin: 0;
+            padding: 40px 20px;
+            
+            background-color: #000000; 
+            background-image: url("FondoFrutigerAero.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .upload-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+        }
+
+        .upload-card h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            box-sizing: border-box;
+            outline: none;
+            font-family: sans-serif;
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            height: 80px;
+        }
+
+        .input-group input::placeholder, .input-group textarea::placeholder {
+            color: #ddd;
+        }
+
+        .btn-enviar {
+            width: 100%;
+            padding: 12px;
+            background: #28a745;
+            border: 1px solid white;
+            border-radius: 6px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .btn-enviar:hover {
+            background: #218838;
+        }
+
+        .btn-volver {
+            display: inline-block;
+            margin-top: 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .btn-volver:hover {
+            text-decoration: underline;
+        }
+
+        #loadingMessage {
+            display: none;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #ffeb3b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="upload-card">
+        <h2>Subir un Nuevo Video</h2>
+        
+        <form id="uploadForm">
+            <div class="input-group">
+                <label for="videoTitle">Título del video</label>
+                <input type="text" id="videoTitle" placeholder="Ej. Mi gran gameplay" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="videoDescription">Descripción</label>
+                <textarea id="videoDescription" placeholder="Cuéntanos de qué trata tu video..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label for="videoFile">Selecciona el archivo de video</label>
+                <input type="file" id="videoFile" accept="video/*" required>
+            </div>
+
+            <button type="submit" class="btn-enviar" id="submitBtn">Subir Video</button>
+        </form>
+
+        <div id="loadingMessage">Subiendo video, por favor espera...</div>
+
+        <a href="index.html" class="btn-volver">← Volver al inicio</a>
+    </div>
+
+    <!-- LIBRERÍAS DE FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Tus credenciales de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAPS45MduxuIbDS2jDJKMa_5L7p5Mh-pH8",
+            authDomain: "geoxix-fc917.firebaseapp.com",
+            projectId: "geoxix-fc917",
+            storageBucket: "geoxix-fc917.firebasestorage.app",
+            messagingSenderId: "549261776646",
+            appId: "1:549261776646:web:4e50075cc3274226bf3087"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const storage = firebase.storage();
+        const db = firebase.firestore();
+
+        const uploadForm = document.getElementById('uploadForm');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Seguridad: Verificar si el usuario está autenticado al entrar
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                alert("Debes iniciar sesión para acceder a esta página.");
+                window.location.href = "index.html";
+            }
+        });
+
+        // Manejar la subida del video
+        uploadForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('videoTitle').value;
+            const description = document.getElementById('videoDescription').value;
+            const fileInput = document.getElementById('videoFile');
+            const file = fileInput.files[0];
+
+            if (!file) return;
+
+            submitBtn.style.display = 'none';
+            loadingMessage.style.display = 'block';
+
+            // 1. Crear referencia en Firebase Storage
+            const storageRef = storage.ref('videos/' + Date.now() + '_' + file.name);
+            const uploadTask = storageRef.put(file);
+
+            uploadTask.on('state_changed', 
+                (snapshot) => {
+                    // Opcional: puedes calcular el progreso de subida aquí si lo deseas
+                }, 
+                (error) => {
+                    alert("Error al subir el video: " + error.message);
+                    submitBtn.style.display = 'block';
+                    loadingMessage.style.display = 'none';
+                }, 
+                () => {
+                    // 2. Obtener la URL pública del video subido
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        
+                        // 3. Guardar los datos en Firestore
+                        db.collection('videos').add({
+                            title: title,
+                            description: description,
+                            videoUrl: downloadURL,
+                            author: auth.currentUser.email || auth.currentUser.displayName,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        })
+                        .then(() => {
+                            alert("¡Video publicado con éxito!");
+                            window.location.href = "index.html";
+                        })
+                        .catch((error) => {
+                            alert("Error al guardar los datos: " + error.message);
+                            submitBtn.style.display = 'block';
+                            loadingMessage.style.display = 'none';
+                        });
+                    });
+                }
+            );
+        });
+    </script>
+</body>
+</html>
